@@ -7,32 +7,6 @@ from os import listdir
 import datetime as time
 from utilities import Batch
 from ISPForest import StreamingHalfSpaceTree
-# from HSTree import StreamingHalfSpaceTree
-
-
-"""
-http
-0,201669
-1,1
-0,109782
-1,1000
-0,3645
-1,2
-0,64
-1,1002
-0,13605
-1,1
-0,63445
-1,1
-0,39709
-1,2
-0,34274
-1,101
-0,35328
-1,1
-0,10708
-1,100
-"""
 
 def run_report(data, n_trees, max_depth, adaptive):
     X = data[:, :-1]
@@ -83,33 +57,7 @@ def run_report(data, n_trees, max_depth, adaptive):
     print(roc_auc_score(ground_truth, test_res))
     return roc_auc_score(ground_truth, test_res), f1_score(ground_truth, test_res), runtime, feed_back_per_window
 
-"""
-letter      0.5699440193025904
-speech      0.544308054481251
-pima        0.6012462548607127
-vowels      0.6165790686952513
-satellite   0.7402836403007158
-annthyroid  0.7435222323674506
-arrhythmia  0.7915742793791575
-cover       0.7254098469870686
-covertype   0.7412881826779048
-ionosphere  0.7988803649181009
-optdigits   0.8187462447426397
-smtp        0.8221326032782282
-mnist       0.8352171736005332
-mammography 0.8697732763426872
-cardio      0.8982289589150378
-musk        0.9273004963726612
-pendigits   0.9324502465589284
-shuttle     0.939987931601368
-httpsmtp    0.9452704635944761
-thyroid     0.9674969741927928
-wbc         0.9691898060098897
-satimage-2  0.976427366198705
-mulcross    0.9766769693317963
-http        0.9824446990918633
-breastw     0.9932281473527425
-"""
+
 def HST(data):
     X = data[:, :-1]
     y = data[:, -1]
