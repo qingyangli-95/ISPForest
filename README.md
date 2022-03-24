@@ -1,5 +1,5 @@
 # ISPForest
-Updating the tree model online according to human feedback and current instance.
+Re-designing a tree-structured anomaly detector. The structure of the tree is updated online according to human feedback and current instance.
 ![image](https://user-images.githubusercontent.com/70427143/159866771-b6e598ee-0be8-43ea-a394-0c0c2ce81f16.png)
 
 
