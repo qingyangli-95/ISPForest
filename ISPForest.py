@@ -82,7 +82,7 @@ class StreamingHalfSpaceTree:
         self.window_size = window_size
         self.contamination = contamination
         self.adaptive = adaptive
-        self.mass_mv = [IncrementalVar() for _ in range(n_trees)]  # ll
+        self.mass_mv = [IncrementalVar() for _ in range(n_trees)] 
         # 每一棵树 mass 的均值和方差
         self.terminal_entropys = []  # ll
         # 每棵树叶节点inst_ref的熵
@@ -112,7 +112,7 @@ class StreamingHalfSpaceTree:
         feature = np.random.choice(len(mins), p=plens)
         return feature
 
-    def tree_growth(self, node, mins, maxs): # 树的构造
+    def tree_growth(self, node, mins, maxs): # construct the tree model
         if node.level == self.terminal_depth:
             node.is_terminal = True
         if node.level >= self.max_depth:
@@ -142,11 +142,11 @@ class StreamingHalfSpaceTree:
         self.traverse_record_terminals(node.left, leaves)
         self.traverse_record_terminals(node.right, leaves)
 
-    def calc_ternimal_entropy(self):  ## 改进
+    def calc_ternimal_entropy(self):  
         self.ternimal_entropys = []
         for root in self.trees:
             ternimal_list = []
-            self.traverse_record_terminals(root, ternimal_list)  ##
+            self.traverse_record_terminals(root, ternimal_list)  
             entropy = entropy_freqs([al.inst_ref * (2 ** al.level) for al in ternimal_list])
             # self.ternimal_entropys.append(1 - entropy / self.max_depth)
             self.ternimal_entropys.append(1 - entropy / self.max_depth)
@@ -226,21 +226,20 @@ class StreamingHalfSpaceTree:
         consistency = np.mean(errors)
         scores = np.array(scores)
         avg_score = np.mean(scores)
-        # terminal inst_ref 的diversity，是否有冲突?
         # raw_score = np.average(masses, weights=self.ternimal_entropys)
-        # 论文
+        
         if return_score_list:
             return avg_score, consistency, scores
         return avg_score, consistency
 
-    def sigmoid(self, x, mass_mv):  # 论文
+    def sigmoid(self, x, mass_mv):  
         if mass_mv.var < 1e-10:
             mass_mv(0)
         # gamma = np.sqrt(3 * mass_mv.var) / np.pi
         gamma = np.pi * np.sqrt(mass_mv.var/ 3)
         return 1.0 / (1.0 + np.exp((-x + mass_mv.mean) / gamma))
 
-    # 数据fit到树结构当中
+    # training
     def fit(self, X):
         X = np.array(X)
         N, M = X.shape
@@ -265,8 +264,7 @@ class StreamingHalfSpaceTree:
             return
         self.update_tree(node.left)
         self.update_tree(node.right)
-
-# 根据fit的树来预测
+        
     def predict(self, x, cut=True,
                 scale_score = False,
                 return_consistency=False):
@@ -345,7 +343,7 @@ class StreamingHalfSpaceTree:
                                      regional_derivative,
                                      terminals, self.mass_mv):
             derivative_sign = gi * ri
-            adjust_rate = gi/ri  # 自适应的adjust_rate
+            adjust_rate = gi/ri  # adjust_rate
             if derivative_sign > EPSILON:  # g and r have the same sign
                 if ri > EPSILON:  # g>0 and r>0: collapse or increase mass
                     trycollapse = self.collapse_node(node, t, y, amv)
